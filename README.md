@@ -17,3 +17,6 @@ In the plugin root file...
     $PluginName = CM_WP_Plugin::register( 'plugin_slug', __FILE__ );
     
 
+To access a plugin object that has been registered anywhere within WordPress…
+
+    $PluginName = CM_WP_Plugin::load( 'plugin_slug' );

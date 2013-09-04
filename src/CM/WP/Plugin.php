@@ -40,6 +40,26 @@ if (!class_exists('CM_WP_Plugin')) {
         }
 
         /**
+         * Loads a previously registered plugin
+         * 
+         * @param string $slug Slug of the plugin required
+         *
+         * @throws CM_WP_Exception_PluginNotRegisteredException If the plugin has not
+         *         been registered
+         * 
+         * @return 
+         */
+        public function load( $slug ) {
+
+            // Check that the plugin requested is registered
+            if ( ! isset( self::$plugins[$slug] ) ) {
+                throw new CM_WP_Exception_PluginNotRegisteredException( $slug );
+            }
+
+            return self::$plugins[$slug]
+        }
+
+        /**
          * Sets the root file for the plugin for use within function calls
          *
          * This method is protected as should be called from the static create
