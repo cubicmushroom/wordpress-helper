@@ -20,6 +20,9 @@ if (!class_exists('CM_WP_Plugin')) {
          *
          * @param string $slug The slug used to identify this plugin
          * @param string $file The full path to the plugin's root file
+         *
+         * @throws CM_WP_Exception_PluginAlreadyRegisteredException If a plugin has
+         *         already been registered with that slug
          * 
          * @return CM_WP_Plugin
          */
