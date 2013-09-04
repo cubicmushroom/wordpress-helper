@@ -31,9 +31,9 @@ if (!class_exists('CM_WP_Plugin')) {
             }
 
             // Create the plugin object
-            $this->plugins[$slug] = new CM_WP_Plugin( $file );
+            self::$plugins[$slug] = new CM_WP_Plugin( $file );
 
-            return $this->plugins[$slug];
+            return self::$plugins[$slug];
         }
 
         /**
