@@ -20,3 +20,37 @@ In the plugin root file...
 To access a plugin object that has been registered anywhere within WordPress…
 
     $PluginName = CM_WP_Plugin::load( 'plugin_slug' );
+    
+
+
+General Methods
+---------------
+
+These are available to post Plugins & Themes
+
+### Register a Custom Post Type
+
+To register a post types, just call the register_post_type() method on the theme or plugin object…
+
+    $packages_pt = $LIMTool->register_post_type( 'Packages' );
+    
+
+
+### Adding rewrite rules
+
+To add a rewrite rule for a plugin/theme…
+
+    $plugin->custom_url( $regex, $rewrite, $position );
+
+
+To add an automatic handler for the rewrite…
+
+    $plugin->custom_url( $regex, [$rewrite, $position] )->is_handled_by( $callback );
+
+
+
+
+Roadmap
+-------
+
+1. Add automatic plugin activation hook to flush permalinks for rewrite rules & post types
