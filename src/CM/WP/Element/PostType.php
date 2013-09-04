@@ -72,8 +72,8 @@ if (!class_exists('CM_WP_Element_PostType')) {
          ************************/
 
         public function register_post_types() {
-            foreach ( $this->registered_post_types as $post_type ) {
-                $post_type->register();
+            foreach ( self::$registered_post_types as $post_type ) {
+                $post_type->register_with_wp();
             }
         }
 
@@ -119,7 +119,7 @@ if (!class_exists('CM_WP_Element_PostType')) {
          * 
          * @return void
          */
-        protected function register() {
+        protected function register_with_wp() {
         }
     }
 }

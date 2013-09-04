@@ -60,6 +60,12 @@ if (!class_exists('CM_WP_Base')) {
         }
 
 
+        /**************************
+         * Getters, setters, etc. *
+         **************************/
 
+        public function get_prefix() {
+            return $this->prefix;
+        }
     }
 }
