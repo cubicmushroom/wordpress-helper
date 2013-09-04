@@ -56,7 +56,7 @@ if (!class_exists('CM_WP_Plugin')) {
                 throw new CM_WP_Exception_PluginNotRegisteredException( $slug );
             }
 
-            return self::$plugins[$slug]
+            return self::$plugins[$slug];
         }
 
         /**
