@@ -2,11 +2,11 @@
 
 if (
     ! class_exists(
-        'CM_WP_Exception_CM_WP_Exception_InvalidSlugException'
+        'CM_WP_Exception_InvalidSlugException'
     )
 ) {
 
-    class CM_WP_Exception_CM_WP_Exception_InvalidSlugException extends
+    class CM_WP_Exception_InvalidSlugException extends
         Exception
     {
         /**
