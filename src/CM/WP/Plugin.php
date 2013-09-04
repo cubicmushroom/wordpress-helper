@@ -26,7 +26,7 @@ if (!class_exists('CM_WP_Plugin')) {
          * 
          * @return CM_WP_Plugin
          */
-        public function register( $slug, $file ) {
+        static public function register( $slug, $file ) {
 
             // Check that this plugin has not already been registered
             if ( isset( self::$plugins[$slug] ) ) {
@@ -49,7 +49,7 @@ if (!class_exists('CM_WP_Plugin')) {
          * 
          * @return 
          */
-        public function load( $slug ) {
+        static public function load( $slug ) {
 
             // Check that the plugin requested is registered
             if ( ! isset( self::$plugins[$slug] ) ) {
