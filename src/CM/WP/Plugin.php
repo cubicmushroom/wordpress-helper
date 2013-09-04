@@ -59,6 +59,18 @@ if (!class_exists('CM_WP_Plugin')) {
             return self::$plugins[$slug];
         }
 
+
+
+
+
+
+
+
+
+        /*******************************
+         * Object properties & methods *
+         *******************************/
+
         /**
          * Sets the root file for the plugin for use within function calls
          *
