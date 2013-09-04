@@ -184,6 +184,7 @@ if (!class_exists('CM_WP_Element_PostType')) {
          * @return void
          */
         protected function register_with_wp() {
+            register_post_type( $this->slug, $this->prepare_post_args() );
         }
     }
 }
