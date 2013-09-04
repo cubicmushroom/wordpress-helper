@@ -34,7 +34,7 @@ if (!class_exists('CM_WP_Plugin')) {
             }
 
             // Create the plugin object
-            self::$plugins[$slug] = new CM_WP_Plugin( $file );
+            self::$plugins[$slug] = new CM_WP_Plugin( $slug, $file );
 
             return self::$plugins[$slug];
         }
@@ -65,11 +65,17 @@ if (!class_exists('CM_WP_Plugin')) {
          * This method is protected as should be called from the static create
          * factory method
          * 
+         * @param string $slug The slug used to identify this plugin used to build
+         *                     prefix
          * @param string $file The full path to the plugin's root file
          */
-        protected function __construct( $file )
+        protected function __construct( $slug, $file )
         {
             $this->file = $file;
+
+            // Call the CM_WP_Base constructor to set the plugin prefix (used to
+            // namespace various items)
+            parent::__construct( $slug );
         }
 
 
