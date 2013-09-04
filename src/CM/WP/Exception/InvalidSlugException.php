@@ -38,7 +38,7 @@ if (
                     "are '%s'",
                     $this->slug,
                     $this->valid_chars
-                );
+                )
             );
         }
     }
