@@ -19,7 +19,7 @@ if (!class_exists('CM_WP_Element_PostType')) {
          * added
          * @var boolean
          */
-        static protected $registration_hooked = false;
+        static protected $hook_registered = false;
 
         
         /**
@@ -58,9 +58,9 @@ if (!class_exists('CM_WP_Element_PostType')) {
             self::$registered_post_types[$prefixed_slug] = 
                 new CM_WP_Element_PostType( $owner, $prefixed_slug, $name );
 
-            if ( ! self::$registration_hooked ) {
+            if ( ! self::$hook_registered ) {
                 add_action( 'init', array( __CLASS__, 'register_post_types') );
-                self::$registration_hooked = true;
+                self::$hook_registered = true;
             }
 
             return self::$registered_post_types[$prefixed_slug];
