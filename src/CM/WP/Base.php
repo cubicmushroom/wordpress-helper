@@ -17,7 +17,7 @@ if (!class_exists('CM_WP_Base')) {
          * 
          * @param string $slug The slug that the plugin or theme is identified by
          */
-        public function __construct( $slug ) {
+        protected function __construct( $slug ) {
 
             // Check slug for invalid characters
             $valid_chars = 'a-z 0-9 _';
