@@ -17,8 +17,9 @@ if (
         protected $slug;
 
         /**
-         * [__construct description]
-         * @param [type] $slug [description]
+         * Stores slug & builds exception message form slug
+         * 
+         * @param string $slug Slug that a plugin is already registered for
          */
         public function __construct( $slug )
         {
