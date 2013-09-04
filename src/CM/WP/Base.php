@@ -61,6 +61,43 @@ if (!class_exists('CM_WP_Base')) {
         }
 
 
+        /*******************
+         * Rewrite Helpers *
+         *******************/
+
+        /**
+         * Adds a rewrite rule for a custom permalink format
+         *
+         * @param string $regex    Regex defining the URL to match
+         * @param string $redirect (optional) Where to redirect to.
+         *                         If not provided, will redirect to index.php
+         *                         This may not seem to be much use as WordPress
+         *                         relies on parameters to determine the page to
+         *                         display, however when used in conjunction with the
+         *                         CM_WP_Rewrite::is_handled_by() method that can be
+         *                         used to handle the request
+         * @param string $position Position to add the rewrite (top|bottom).
+         *                         See WP add_rewrite_rule() function for explanation
+         *
+         * @return CM_WP_Element_Rewrite Returns an object that can then be used to
+         *                               add a request handler
+         */
+        public function custom_url(
+            $regex,
+            $redirect = 'index.php',
+            $position = 'top'
+        ) {
+            // Register the new rewrite
+            $rewrite = CM_WP_Element_Rewrite::register(
+                $this,
+                $regex,
+                $redirect,
+                $position
+            );
+
+            return $rewrite;
+        }
+
         /**************************
          * Getters, setters, etc. *
          **************************/
