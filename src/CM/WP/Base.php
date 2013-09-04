@@ -32,7 +32,8 @@ if (!class_exists('CM_WP_Base')) {
                 throw new CM_WP_Exception_InvalidSlugException( $slug, $valid_chars );
             }
 
-            $this->prefix = $slug;
+            // Set the prefix to the slug with the _s stripped out
+            $this->prefix = str_replace( '_', '', $slug );
         }
 
 
