@@ -9,7 +9,7 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
          * Constants *
          *************/
 
-        const REDIRECT_ID_PARAM = 'rewrite_id';
+        const REDIRECT_ID_PARAM = 'cm_wp_rewrite_id';
 
         /*************************
          * Static factory method *
@@ -74,6 +74,20 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
         /*****************************
          * Additional static methods *
          *****************************/
+
+        /**
+         * Adds support for the redirect ID query var used for handling automatic
+         * permalink handlers
+         *
+         * @param array $query_vars Existing array of query vars
+         *
+         * @return array Updated query_vars array with the additional item(s)
+         */
+        static public function add_redirect_id_query_var( $query_vars ) {
+            $query_vars[] = self::REDIRECT_ID_PARAM;
+
+            return $query_vars;
+        }
         
         /**
          * 'parse_query' action hook callback used to check for permalink handler
@@ -82,10 +96,25 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
          * 
          * @return void
          */
-        public function call_handler( $query ) {
-            echo '<pre>';
-            var_dump($query);
-            echo '</pre>';
+        static public function call_handler( $query ) {
+
+            // We're only interested in handling the main query
+            if ( ! $query->is_main_query() ) {
+                return;
+            }
+
+            $redirect_id = get_query_var( self::REDIRECT_ID_PARAM );
+
+            // We're also only interested in pages that have a redirect id (i.e. were
+            // created using the CM_WP_Element_Rewrite class)
+            if ( empty( $redirect_id ) ) {
+                return;
+            }
+
+            $rewrite = self::$rewrites[$redirect_id];
+
+            // Try calling the rewrite handler
+            $rewrite->handle_query( $query );
         }
 
 
@@ -163,8 +192,7 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
             // Add the redirect's ID as a parameter to the redirect.  This allows us
             // to hook into request when it's received & handle the request using a
             // callback set using the is_handles_by() method
-            $redirect_id_param = "{$this->owner->get_prefix()}_" . 
-                self::REDIRECT_ID_PARAM;
+            $redirect_id_param = self::REDIRECT_ID_PARAM;
             $this->redirect = add_query_arg(
                 array( $redirect_id_param => $this->id),
                 $redirect
@@ -172,7 +200,7 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
 
             $this->position = $position;
 
-            add_action( 'init', array( $this, 'add_rewrite_rule_to_wp' ) );
+            add_action( 'init', array( $this, 'hook_add_rewrite_rule_to_wp' ) );
         }
 
         /**
@@ -203,22 +231,50 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
          * 
          * @param callable $callback Callable callback that will be used to handle this callback
          *
+         * @throws CM_WP_Exception_InvalidCallbackException if $callback is not
+         *         callable
+         *
          * @return void
          */
         public function handled_by( $callback ) {
 
             // Check the callback is a valid callable
             if ( ! is_callable( $callback ) ) {
-                throw new CM_WP_InvalidCallbackException( $callback, sprintf );
+                throw new CM_WP_Exception_InvalidCallbackException( $callback );
             }
 
             $this->handler = $callback;
 
             // If not already added, add the handler hook
             if ( ! self::$hook_registered_for_handler ) {
+                // For this to work we need WP to recognise the query var used to
+                // pass the rewrite ID
+                add_action(
+                    'query_vars',
+                    array( __CLASS__, 'add_redirect_id_query_var' )
+                );
+
                 add_action( 'parse_query', array( __CLASS__, 'call_handler' ) );
 
                 self::$hook_registered_for_handler = true;
+            }
+        }
+
+        /**
+         * Function to handle request
+         *
+         * Checks to see if there is a handler for this permalink.  If so, calls it.
+         *
+         * This method is actually called during 'parse_query' action hook to allow
+         * access to the query object
+         *
+         * @param WP_Query $query WordPress query object for the current permalink
+         * 
+         * @return void
+         */
+        protected function handle_query( $query ) {
+            if ( isset( $this->handler ) ) {
+                call_user_func( $this->handler );
             }
         }
 
