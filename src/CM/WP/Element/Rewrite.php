@@ -22,6 +22,14 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
         static protected $rewrites = array();
 
         /**
+         * Flag to indicate whether the action hook for handling requests has been
+         * registered
+         * 
+         * @var bool
+         */
+        static protected $hook_registered_for_handler = false;
+
+        /**
          * Registers a new rewrite
          * 
          * @param CM_WP_Base $owner    Plugin/theme object that this rewrite belongs
@@ -61,6 +69,26 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
         }
 
 
+
+
+        /*****************************
+         * Additional static methods *
+         *****************************/
+        
+        /**
+         * 'parse_query' action hook callback used to check for permalink handler
+         * 
+         * @param WP_Query $query Current query
+         * 
+         * @return void
+         */
+        public function call_handler( $query ) {
+            echo '<pre>';
+            var_dump($query);
+            echo '</pre>';
+        }
+
+
         /*******************************
          * Object properties & methods *
          *******************************/
@@ -94,6 +122,12 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
          * @var string
          */
         protected $position;
+
+        /**
+         * Callback responsible for handling this permalink
+         * @var callable
+         */
+        protected $handler;
 
         /**
          * Generates a unique ID for the rewrite & adds the rewrite rule
@@ -162,6 +196,30 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
          */
         protected function add_rewrite_rule_to_wp() {
             add_rewrite_rule( $this->regex, $this->redirect, $this->position );
+        }
+
+        /**
+         * Adds a callback to handle the rewrite request
+         * 
+         * @param callable $callback Callable callback that will be used to handle this callback
+         *
+         * @return void
+         */
+        public function handled_by( $callback ) {
+
+            // Check the callback is a valid callable
+            if ( ! is_callable( $callback ) ) {
+                throw new CM_WP_InvalidCallbackException( $callback, sprintf );
+            }
+
+            $this->handler = $callback;
+
+            // If not already added, add the handler hook
+            if ( ! self::$hook_registered_for_handler ) {
+                add_action( 'parse_query', array( __CLASS__, 'call_handler' ) );
+
+                self::$hook_registered_for_handler = true;
+            }
         }
 
 
