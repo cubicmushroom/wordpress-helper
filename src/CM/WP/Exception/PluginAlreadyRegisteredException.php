@@ -21,8 +21,7 @@ if (
          * 
          * @param string $slug Slug that a plugin is already registered for
          */
-        public function __construct( $slug )
-        {
+        public function __construct( $slug ) {
             $this->slug = $slug;
 
             parent::__construct(

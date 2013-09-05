@@ -20,8 +20,7 @@ if (
          * [__construct description]
          * @param [type] $slug [description]
          */
-        public function __construct( $slug )
-        {
+        public function __construct( $slug ) {
             $this->slug = $slug;
 
             parent::__construct(

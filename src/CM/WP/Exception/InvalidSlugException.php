@@ -27,8 +27,7 @@ if (
          * @param string $slug        Slug that contains invalid characters
          * @param string $valid_chars String of valid characters
          */
-        public function __construct( $slug, $valid_chars )
-        {
+        public function __construct( $slug, $valid_chars ) {
             $this->slug = $slug;
             $this->valid_chars = $valid_chars;
 

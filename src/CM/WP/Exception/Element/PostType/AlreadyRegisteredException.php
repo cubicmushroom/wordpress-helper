@@ -16,8 +16,7 @@ if (!class_exists('CM_WP_Exception_Element_PostType_AlreadyRegisteredException')
          * 
          * @param string $slug Slug attempting to be registered
          */
-        public function __construct( $slug )
-        {
+        public function __construct( $slug ) {
             $this->slug = $slug;
 
             parent::__construct(
