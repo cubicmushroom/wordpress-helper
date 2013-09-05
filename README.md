@@ -32,7 +32,7 @@ These are available to post Plugins & Themes
 
 To register a post types, just call the register_post_type() method on the theme or plugin object…
 
-    $packages_pt = $LIMTool->register_post_type( 'Packages' );
+    $packages_pt = $PluginName->register_post_type( 'Packages' );
     
 
 
@@ -40,12 +40,12 @@ To register a post types, just call the register_post_type() method on the theme
 
 To add a rewrite rule for a plugin/theme…
 
-    $plugin->custom_url( $regex, $rewrite, $position );
+    $PluginName->custom_url( $regex, $rewrite, $position );
 
 
 To add an automatic handler for the rewrite…
 
-    $plugin->custom_url( $regex, [$rewrite, $position] )->is_handled_by( $callback );
+    $PluginName->custom_url( $regex, [$rewrite, $position] )->is_handled_by( $callback );
 
 
 
