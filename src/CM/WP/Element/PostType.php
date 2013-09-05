@@ -186,5 +186,19 @@ if (!class_exists('CM_WP_Element_PostType')) {
         protected function register_with_wp() {
             register_post_type( $this->slug, $this->prepare_post_args() );
         }
+
+
+        /**************************
+         * Getters, setters, etc. *
+         **************************/
+
+        /**
+         * Returns the post type slug
+         * 
+         * @return string
+         */
+        public function get_slug() {
+            return $this->slug;
+        }
     }
 }

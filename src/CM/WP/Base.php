@@ -57,6 +57,8 @@ if (!class_exists('CM_WP_Base')) {
         public function register_post_type( $name, $slug = null ) {
             $post_type = CM_WP_Element_PostType::register( $this, $name, $slug );
 
+            $this->post_types[$post_type->get_slug()] = $post_type;
+
             return $post_type;
         }
 
@@ -68,7 +70,9 @@ if (!class_exists('CM_WP_Base')) {
         /**
          * Adds a rewrite rule for a custom permalink format
          *
-         * @param string $regex    Regex defining the URL to match
+         * @param string $regex    Regex defining the URL to match  This should not
+         *                         include the regex delimiters or the leading '^' as
+         *                         these are added automatically by WordPress
          * @param string $redirect (optional) Where to redirect to.
          *                         If not provided, will redirect to index.php
          *                         This may not seem to be much use as WordPress
