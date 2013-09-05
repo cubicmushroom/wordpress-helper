@@ -86,7 +86,7 @@ if (!class_exists('CM_WP_Base')) {
          * @return CM_WP_Element_Rewrite Returns an object that can then be used to
          *                               add a request handler
          */
-        public function custom_url(
+        public function custom_uri(
             $regex,
             $redirect = 'index.php',
             $position = 'top'
