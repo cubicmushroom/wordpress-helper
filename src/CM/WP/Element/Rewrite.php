@@ -2,7 +2,7 @@
 
 if (!class_exists('CM_WP_Element_Rewrite')) {
 
-    class CM_WP_Element_Rewrite {
+    class CM_WP_Element_Rewrite extends CM_WP_Element {
 
 
         /*************
@@ -123,14 +123,8 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
          *******************************/
 
         /**
-         * The plugin/theme obejct that this redirect belongs to
-         * @var CM_WP_Base
-         */
-        protected $owner;
-
-        /**
          * Unique ID for this redirect
-         * @var [type]
+         * @var string
          */
         protected $id;
 
@@ -181,8 +175,7 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
             $redirect,
             $position
         ) {
-            // Store the owning plugin/theme object
-            $this->owner = $owner;
+            parent::__construct( $owner );
 
             // Generate a unique ID for the rewrite
             $this->id = md5( $regex );

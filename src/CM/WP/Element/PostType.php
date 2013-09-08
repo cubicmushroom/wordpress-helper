@@ -2,7 +2,7 @@
 
 if (!class_exists('CM_WP_Element_PostType')) {
 
-    class CM_WP_Element_PostType {
+    class CM_WP_Element_PostType extends CM_WP_Element {
 
         /***************************************
          * Static factory properties & methods *
@@ -84,12 +84,6 @@ if (!class_exists('CM_WP_Element_PostType')) {
          *******************************/
 
         /**
-         * Plugin/Theme object that this plugin belongs to
-         * @var CM_WP_Base
-         */
-        protected $owner;
-
-        /**
          * Slug to use when registering the post_type
          * @var string
          */
@@ -128,7 +122,7 @@ if (!class_exists('CM_WP_Element_PostType')) {
          */
         protected function __construct( CM_WP_Base $owner, $slug, $name )
         {
-            $this->owner  = $owner;
+            parent::__construct( $Qowner );
             $this->slug   = $slug;
 
             // Build the labels array from the $name
