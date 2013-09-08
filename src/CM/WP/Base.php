@@ -102,6 +102,23 @@ if (!class_exists('CM_WP_Base')) {
             return $rewrite;
         }
 
+
+
+        /********************
+         * Shorcode helpers *
+         ********************/
+
+        /**
+         * Registers a shortcode with WordPres, & returns an object to 
+         * 
+         * @param string $shortcode Shortcode to be added
+         */
+        public function add_shrotcode( $shortcode ) {
+            $shortcode = CM_WP_Element_Shortcode::regsiter( $shortcode );
+
+            return $shortcode;
+        }
+
         /**************************
          * Getters, setters, etc. *
          **************************/
