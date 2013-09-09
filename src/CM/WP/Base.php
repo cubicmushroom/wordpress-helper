@@ -114,7 +114,7 @@ if (!class_exists('CM_WP_Base')) {
          * @param string $shortcode Shortcode to be added
          */
         public function add_shrotcode( $shortcode ) {
-            $shortcode = CM_WP_Element_Shortcode::regsiter( $shortcode );
+            $shortcode = CM_WP_Element_Shortcode::register( $this, $shortcode );
 
             return $shortcode;
         }
