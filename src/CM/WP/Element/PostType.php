@@ -122,7 +122,7 @@ if (!class_exists('CM_WP_Element_PostType')) {
          */
         protected function __construct( CM_WP_Base $owner, $slug, $name )
         {
-            parent::__construct( $Qowner );
+            parent::__construct( $owner );
             $this->slug   = $slug;
 
             // Build the labels array from the $name
