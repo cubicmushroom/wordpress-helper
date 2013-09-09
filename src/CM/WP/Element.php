@@ -2,7 +2,7 @@
 
 if (!class_exists('CM_WP_Element')) {
 
-    class CM_WP_Element {
+    abstract class CM_WP_Element {
 
 
         /*******************************

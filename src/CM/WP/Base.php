@@ -2,7 +2,7 @@
 
 if (!class_exists('CM_WP_Base')) {
 
-    class CM_WP_Base {
+    abstract class CM_WP_Base {
 
         /**
          * Prefix used to namespace various items created
