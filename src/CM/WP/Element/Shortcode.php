@@ -66,10 +66,10 @@ if (!class_exists('CM_WP_Element_Shortcode')) {
         /**
          * Sets the owning plugin/theme that this shortcode belongs to
          */
-        public function __construct( CM_WP_Core $owner, $shortcode ) {
+        public function __construct( CM_WP_Base $owner, $shortcode ) {
             parent::__construct( $owner );
 
-            add_shortcode( $shortcode, array( $this, 'so_shortcode' ) );
+            add_shortcode( $shortcode, array( $this, 'do_shortcode' ) );
         }
 
 
