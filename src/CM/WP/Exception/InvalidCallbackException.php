@@ -25,12 +25,18 @@ if (
 
             $this->callback = $callback;
 
-            parent::__construct(
-                sprintf(
-                    "Invalid callback '%s'",
-                    $this->callback
-                )
+            if ( is_array( $this->callback ) ) {
+                $callback_str = var_export( $this->callback, true );
+            } else {
+                $callback_str = $this->callback;
+            }
+
+            $msg = sprintf(
+                "Invalid callback '%s'",
+                $callback_str
             );
+
+            parent::__construct( $msg );
         }
     }
 }
