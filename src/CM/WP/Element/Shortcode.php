@@ -99,6 +99,8 @@ if (!class_exists('CM_WP_Element_Shortcode')) {
                 throw new CM_WP_Exception_InvalidCallbackException( $handler );
             }
 
+            $this->handler = $handler;
+
             return $this;
         }
 
