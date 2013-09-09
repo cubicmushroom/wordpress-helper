@@ -94,7 +94,7 @@ if (!class_exists('CM_WP_Element_Shortcode')) {
          *
          * @return $this (for method chaining)
          */
-        protected function is_handled_by( $handler ) {
+        public function is_handled_by( $handler ) {
             if ( ! is_callable( $handler ) ) {
                 throw new CM_WP_Exception_InvalidCallbackException( $handler );
             }
