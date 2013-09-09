@@ -2,7 +2,7 @@
 
 if (!class_exists('CM_WP_Element_Shortcode')) {
 
-    class CM_WP_Element_Shortcode {
+    class CM_WP_Element_Shortcode extends CM_WP_Element {
         
         /***************************************
          * Static factory properties & methods *
@@ -12,7 +12,7 @@ if (!class_exists('CM_WP_Element_Shortcode')) {
          * Stores all the registered shortcodes
          * @var array
          */
-        protected $registered_shortcodes = array();
+        static protected $registered_shortcodes = array();
 
         /**
          * Registers a shorcode with WordPress, returning a CM_WP_Element_Shortcode
@@ -23,7 +23,7 @@ if (!class_exists('CM_WP_Element_Shortcode')) {
          * 
          * @return CM_WP_Element_Shortcode
          */
-        public function register( CM_WP_Core $owner, $shortcode ) {
+        static public function register( CM_WP_Base $owner, $shortcode ) {
 
             if ( ! isset( self::$registered_shortcodes[$shortcode] ) ) {
                 $class = get_called_class();
