@@ -166,15 +166,23 @@ if (!class_exists('CM_WP_Base')) {
         /**
          * Registers a plugin/theme module
          * 
-         * @param string $class Name of the module class
-         *                      Should extend CM_WP_Module class
+         * @param string $module       Name of the module
+         * @param string $module_class (optional) Class name to use for the module
+         *                             If not provided, class name will be determined
+         *                             by calling $this->get_module_class()
+         *
+         * @return CM_WP_Module Module object
          */
-        public function register_module( $module ) {
+        public function register_module( $module, $module_class = null ) {
 
-            $module_class = $this->get_module_class( $module );
+            if ( is_null( $module_class ) ) {
+                $module_class = $this->get_module_class( $module );
+            }
 
             if ( ! isset( $this->registered_modules[$module] ) ) {
                 $this->registered_modules[$module] = $module_class::load( $this );
+            } else {
+                $this->registered_modules[$module]->also_registered_by( $this );
             }
 
             return $this->registered_modules[$module];
