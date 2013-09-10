@@ -72,6 +72,13 @@ if (!class_exists('CM_WP_Plugin')) {
          *******************************/
 
         /**
+         * Plugin's main file
+         * 
+         * @var string
+         */
+        protected $file;
+
+        /**
          * Sets the root file for the plugin for use within function calls
          *
          * This method is protected as should be called from the static create
