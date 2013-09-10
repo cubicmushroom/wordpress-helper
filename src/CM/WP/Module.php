@@ -1,0 +1,117 @@
+<?php
+
+if (!class_exists('CM_WP_Module')) {
+
+    abstract class CM_WP_Module {
+
+        /***************************************
+         * Static factory properties & methods *
+         ***************************************/
+
+        /**
+         * Loads the module, passing in the plugin/theme that registered the module
+         *
+         * The loading plugin/theme is needed to determine where to load related
+         * files from, if the plugin uses them
+         *
+         * @param CM_WP_Base $owner
+         *
+         * @return CM_WP_Module
+         */
+        static public function load( CM_WP_Base $owner ) {
+
+            $class = get_called_class();
+
+            $module = new $class( $owner );
+            $module->set_owner( $owner )
+                   ->initialise();
+
+            return $module;
+        }
+        /*******************************
+         * Object properties & methods *
+         *******************************/
+
+        /**
+         * Plugin/theme that registered this module
+         *
+         * @var CM_WP_Base
+         */
+        protected $owner;
+
+
+        /**
+         * Directory that the module was loaded from
+         *
+         * This is determined from the plugin/theme that registered the module
+         *
+         * @var string
+         */
+        protected $dir;
+
+
+        /**
+         * URI that the module was loaded from
+         *
+         * This is determined from the plugin/theme that registered the module
+         *
+         * @var string
+         */
+        protected $uri;
+
+
+        /**
+         * Initialise method called after the module is instantiated & configured by
+         * self::load()
+         *
+         * This does nothing, but can be overridden by modules if required
+         *
+         * @return void
+         */
+        public function initialise() {}
+
+
+
+        /**************************
+         * Getters, setters, etc. *
+         **************************/
+
+        /**
+         * Sets the plugin/theme that registered the module
+         *
+         * @param CM_WP_Theme|CM_WP_Plugin $owner Plugin or theme that registered the
+         *                                        module
+         *
+         * @return $this (to allow method chaining)
+         */
+        public function set_owner( CM_WP_Base $owner ) {
+            $this->owner = $owner;
+            $this->update_dir_uri();
+        }
+
+
+        /**
+         * Updates the $dir & $uri properties of the module
+         *
+         * @return void
+         */
+        protected function update_dir_uri() {
+            switch ( get_class( $this->owner ) ) {
+                case 'CM_WP_Plugin':
+                    $this->dir = plugin_dir_path( $this->owner->get_file() );
+                    $this->uri = plugin_dir_url( $this->owner->get_file() );
+                    break;
+                case 'CM_WP_Theme':
+                    $this->dir = get_stylesheet_directory();
+                    $this->uri = get_stylesheet_directory_uri();
+                    break;
+                default:
+                    throw new InvalidArgumentException(
+                        "Owner must be either a CM_WP_Plugin or CM_WP_Theme object"
+                    );
+            }
+
+            return $this;
+        }
+    }
+}

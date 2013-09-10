@@ -17,6 +17,16 @@ if (!class_exists('CM_WP_Base')) {
         protected $post_types = array();
 
         /**
+         * Array of registered modules
+         *
+         * Each module is instantiated as an object & stored with the array key of
+         * it's name
+         *
+         * @var array
+         */
+        protected $registered_modules = array();
+
+        /**
          * Prepares the plugin prefix
          *
          * @throws CM_WP_Exception_InvalidSlugException If $slug contains invalid characters
@@ -118,6 +128,60 @@ if (!class_exists('CM_WP_Base')) {
 
             return $shortcode;
         }
+
+
+
+        /******************
+         * Module methods *
+         ******************/
+
+        /**
+         * Works out the class name for a give module
+         * 
+         * @param string $module module name
+         *
+         * @return string
+         */
+        protected function get_module_class( $module ) {
+            return 'CM_WP_Module_' .
+                str_replace(
+                    ' ',
+                    '',
+                    ucwords(
+                        str_replace( '_', ' ', $module )
+                    )
+                );
+        }
+
+        /**
+         * Registers a plugin/theme module
+         * 
+         * @param string $class Name of the module class
+         *                      Should extend CM_WP_Module class
+         */
+        public function register_module( $module ) {
+
+            $module_class = $this->get_module_class( $module );
+
+            if ( ! isset( $this->registered_modules[$module] ) ) {
+                $this->registered_modules[$module] = $module_class::load( $this );
+            }
+
+            return $this->registered_modules[$module];
+        }
+
+
+        public function load_module( $module ) {
+
+            if ( ! isset( $this->registered_modules[$module] ) ) {
+                throw new CM_WP_Exception_Module_NotAvailableException( $module );
+                
+            }
+
+            return $this->registered_modules[$module];
+        }
+
+
 
         /**************************
          * Getters, setters, etc. *
