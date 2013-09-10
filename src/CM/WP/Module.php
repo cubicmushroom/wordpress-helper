@@ -41,6 +41,14 @@ if (!class_exists('CM_WP_Module')) {
 
 
         /**
+         * Array of plugins/themes that have registered the module
+         * 
+         * @var array
+         */
+        protected $registered_by = array();
+
+
+        /**
          * Directory that the module was loaded from
          *
          * This is determined from the plugin/theme that registered the module
@@ -86,7 +94,24 @@ if (!class_exists('CM_WP_Module')) {
          */
         public function set_owner( CM_WP_Base $owner ) {
             $this->owner = $owner;
+            $this->registered_by[$owner->get_slug()] = $owner;
             $this->update_dir_uri();
+
+            return $this;
+        }
+
+
+
+        public function also_registered_by( CM_WP_Base $registered_by ) {
+            if (
+                ! $registered_by instanceof CM_WP_Plugin &&
+                ! $registered_by instanceof CM_WP_Theme
+            ) {
+                throw new InvalidArgumentException(
+                    "Owner must be either a CM_WP_Plugin or CM_WP_Theme object"
+                );
+            }
+            $this->registered_by[$owner->get_slug()] = $registered_by;
         }
 
 

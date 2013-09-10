@@ -5,6 +5,14 @@ if (!class_exists('CM_WP_Base')) {
     abstract class CM_WP_Base {
 
         /**
+         * Slug of the plugin/theme
+         * 
+         * @var string
+         */
+        protected $slug;
+
+
+        /**
          * Prefix used to namespace various items created
          * @var string
          */
@@ -34,6 +42,8 @@ if (!class_exists('CM_WP_Base')) {
          * @param string $slug The slug that the plugin or theme is identified by
          */
         protected function __construct( $slug ) {
+
+            $this->slug = $slug;
 
             // Check slug for invalid characters
             $valid_chars = 'a-z 0-9 _';
@@ -186,6 +196,16 @@ if (!class_exists('CM_WP_Base')) {
         /**************************
          * Getters, setters, etc. *
          **************************/
+
+        /**
+         * Returns the plugin/theme slug
+         * 
+         * @return string
+         */
+        public function get_slug() {
+            return $this->slug;
+        }
+
 
         public function get_prefix() {
             return $this->prefix;
