@@ -23,8 +23,14 @@ if (!class_exists('CM_WP_Module')) {
             $class = get_called_class();
 
             $module = new $class( $owner );
-            $module->set_owner( $owner )
-                   ->initialise();
+            $module->set_owner( $owner );
+
+            // Add hook to initialise module after all plugins & theme is loaded
+            if ( $owner instanceof CM_WP_Plugin ) {
+                add_action( 'plugins_loaded', array( $module, 'initialise' ), 5 );
+            } elseif ( $owner instanceof CM_WP_Theme ) {
+                add_action( 'setup_theme', array( $module, 'initialise' ), 5 );
+            }
 
             return $module;
         }
@@ -111,7 +117,7 @@ if (!class_exists('CM_WP_Module')) {
                     "Owner must be either a CM_WP_Plugin or CM_WP_Theme object"
                 );
             }
-            $this->registered_by[$owner->get_slug()] = $registered_by;
+            $this->registered_by[$registered_by->get_slug()] = $registered_by;
         }
 
 
