@@ -207,6 +207,11 @@ if (!class_exists('CM_WP_Base')) {
         }
 
 
+        /**
+         * Returns the plugin/theme prefix
+         * 
+         * @return string
+         */
         public function get_prefix() {
             return $this->prefix;
         }
