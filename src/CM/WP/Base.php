@@ -115,7 +115,7 @@ if (!class_exists('CM_WP_Base')) {
 
 
         /********************
-         * Shorcode helpers *
+         * Shortcode helpers *
          ********************/
 
         /**
