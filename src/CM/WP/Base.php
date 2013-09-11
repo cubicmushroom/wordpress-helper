@@ -54,6 +54,10 @@ if (!class_exists('CM_WP_Base')) {
 
             // Set the prefix to the slug with the _s stripped out
             $this->prefix = str_replace( '_', '', $slug );
+
+
+            // Add specialise hooks
+            add_action( 'parse_request', array( $this, 'handle_forms' ) );
         }
 
 
@@ -198,6 +202,28 @@ if (!class_exists('CM_WP_Base')) {
 
             return $this->registered_modules[$module];
         }
+
+
+
+
+        /****************
+         * Useful hooks *
+         ****************/
+
+        /**
+         * Handles any submitted forms
+         * 
+         * @return void
+         */
+        public function handle_forms() {
+            // We're only interested in forms with a frm_action
+            if ( empty( $_POST['frm_action'] ) ) {
+                return;
+            }
+
+            do_action( "frm_action_{$_POST['frm_action']}" );
+        }
+
 
 
 
