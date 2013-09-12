@@ -182,9 +182,44 @@ if (!class_exists('CM_WP_Element_PostType')) {
         }
 
 
+
+        /**
+         * Gets a post as a CM_WP_Post object
+         *
+         * @param  int|WP_Post $post The post to get
+         *
+         * @throws CM_WP_Exception_Element_PostType_PostNotFoundException if the post
+         *         of this type is not found
+         *
+         * @return CM_WP_Post
+         */
+        public function get( $post ) {
+            if ( $post instanceof WP_Post ) {
+                $post_id = $post->ID;
+            } else {
+                $post_id = (int) $post;
+            }
+
+            $post_obj = get_post( &$post );
+
+            if ( empty( $post_obj ) ) {
+                throw new CM_WP_Exception_Element_PostType_PostNotFoundException(
+                    "Unable to find post with ID {$post_id}"
+                );
+            }
+
+            if ( $this->slug !== $post->post_type ) {
+                throw new CM_WP_Exception_Element_PostType_PostNotFoundException(
+                    "Post ID {$post_id} is not of {$this->slug} post type"
+                );
+            }
+        }
+
+
         /**************************
          * Getters, setters, etc. *
          **************************/
+
 
         /**
          * Returns the post type slug
