@@ -208,11 +208,13 @@ if (!class_exists('CM_WP_Element_PostType')) {
                 );
             }
 
-            if ( $this->slug !== $post->post_type ) {
+            if ( $this->slug !== $post_obj->post_type ) {
                 throw new CM_WP_Exception_Element_PostType_PostNotFoundException(
                     "Post ID {$post_id} is not of {$this->slug} post type"
                 );
             }
+
+            return CM_WP_Element_PostType_Post::create_from_post( $post_obj );
         }
 
 
