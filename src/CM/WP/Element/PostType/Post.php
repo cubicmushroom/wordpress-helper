@@ -16,7 +16,8 @@ if (!class_exists('CM_WP_Element_PostType_Post')) {
          * @return CM_WP_Element_PostType_Post
          */
         static public function create_from_post( WP_Post $post ) {
-            $post_obj = new CM_WP_Element_PostType_Post;
+            $class = get_called_class();
+            $post_obj = new $class;
             $post_obj->set_post( $post );
 
             return $post_obj;

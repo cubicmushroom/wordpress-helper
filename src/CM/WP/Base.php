@@ -72,14 +72,35 @@ if (!class_exists('CM_WP_Base')) {
          * 
          * @param string $name Slug for the post being registered (will be pre-fixed
          *                     by the plugin prefix)
-         * @param array  $slug (optional) The slug for the post.  Will be prefixed 
-         *                     by the plugin/theme prefix.
-         *                     If not provided, will be created from the $name value
+         * @param array  $args (optional) Array of arguments for registering the new
+         *                     post type.
+         *                     Possible arguments are...
+         *                     - class      - Class name to use to register the post
+         *                                    type.
+         *                                    Should be a class that extends the 
+         *                                    CM_WP_Element_PostType class
+         *                     - post_class - Class name to use for post objects.
+         *                                    Should be a class that extends the
+         *                                    CM_WP_Element_PostType_Post class
+         *                     - slug       - The slug for the post.  Will be
+         *                                    prefixed by the plugin/theme prefix.
+         *                                    If not provided, will be created from
+         *                                    the $name value
          * 
          * @return CM_WP_PostType
          */
-        public function register_post_type( $name, $slug = null ) {
-            $post_type = CM_WP_Element_PostType::register( $this, $name, $slug );
+        public function register_post_type( $name, $args = array() ) {
+
+            // Fill gaps in $args with defaults
+            $defaults = array(
+                'class'      => 'CM_WP_Element_PostType',
+            );
+            $args = wp_parse_args( $args, $defaults );
+
+            $class = $args['class'];
+            unset( $args['class'] );
+
+            $post_type = $class::register( $this, $name, $args );
 
             $this->post_types[$post_type->get_slug()] = $post_type;
 

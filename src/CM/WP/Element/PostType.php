@@ -29,14 +29,27 @@ if (!class_exists('CM_WP_Element_PostType')) {
          * @param string     $name  Slug for the post being registered (will be
          *                          pre-fixed by the plugin prefix)
          *                          Name should be the plural term
-         * @param array      $slug  (optional) The slug for the post.  Will be
-         *                          prefixed  by the plugin/theme prefix.
+         * @param array      $args  (optional) Array of additional arguments
+         *                          Possible arguments are...
+         *                          - $post_class - Name of class to use for post
+         *                          objects
+         *                          - $slug - The slug for the post.  Will be prefixed
+         *                          by the plugin/theme prefix.
          *                          If not provided, will be created from the $name
          *                          value
          *
          * @return CM_WP_Element_PostType
          */
-        public function register( $owner, $name, $slug = null ) {
+        static public function register( $owner, $name, $args = array() ) {
+
+            // Fill gaps in $args with defaults
+            $defaults = array(
+                'slug'       => null,
+            );
+            $args = wp_parse_args( $args, $defaults );
+
+            $slug = $args['slug'];
+            unset( $args['slug'] );
 
             // If slug is not provided, build it from the $name value
             if ( empty( $slug ) ) {
@@ -54,9 +67,11 @@ if (!class_exists('CM_WP_Element_PostType')) {
                 
             }
 
+            $class = get_called_class();
+
             // Now build the new object
             self::$registered_post_types[$prefixed_slug] = 
-                new CM_WP_Element_PostType( $owner, $prefixed_slug, $name );
+                new $class( $owner, $prefixed_slug, $name, $args );
 
             if ( ! self::$hook_registered ) {
                 add_action( 'init', array( __CLASS__, 'register_post_types') );
@@ -89,11 +104,13 @@ if (!class_exists('CM_WP_Element_PostType')) {
          */
         protected $slug;
 
+
         /**
          * Labels for the post type
          * @var array
          */
         protected $labels = array();
+
 
         /**
          * Default register_post_type arguments
@@ -113,21 +130,39 @@ if (!class_exists('CM_WP_Element_PostType')) {
             'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' )
         );
 
+
+        /**
+         * The name of the class used to build post objects
+         * @var string
+         */
+        protected $post_class = 'CM_WP_Element_PostType_Post';
+
         /**
          * Sets the object slug & name (label)
-         * 
+         *
+         * @param CM_WP_Base $owner Plugin/theme that registered this post type
          * @param string $slug Slug used to register post with.  WIll be prefixes by
          *                     the plugin/theme prefix
          * @param string $name Name to use for the label for the plugin
+         * @param array $args  Array of additional arguments
          */
-        protected function __construct( CM_WP_Base $owner, $slug, $name )
-        {
+        protected function __construct(
+            CM_WP_Base $owner,
+            $slug,
+            $name,
+            array $args = array()
+        ) {
+
             parent::__construct( $owner );
             $this->slug   = $slug;
 
             // Build the labels array from the $name
             $this->set_labels( $name );
-            
+           
+            // If we've been passed a post_class, override the default class
+            if ( ! empty( $args['post_class'] ) ) {
+                $this->post_class = $args['post_class'];
+            }
         }
 
 
@@ -214,7 +249,8 @@ if (!class_exists('CM_WP_Element_PostType')) {
                 );
             }
 
-            return CM_WP_Element_PostType_Post::create_from_post( $post_obj );
+            $post_class = $this->post_class;
+            return $post_class::create_from_post( $post_obj );
         }
 
 

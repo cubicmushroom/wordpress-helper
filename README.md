@@ -33,7 +33,14 @@ These are available to post Plugins & Themes
 To register a post types, just call the register_post_type() method on the theme or plugin object…
 
     $packages_pt = $PluginName->register_post_type( 'Packages' );
-    
+
+Additionally, you can provide an array of arguments as the 2nd parameter…
+
+    $packages_pt = $PluginName->register_post_type( 'Packages', array(
+    	'class'      => '<Name of that extends the CM_WP_Element_PostType class>',
+        'post_class' => '<Name of that extends the CM_WP_Element_PostType_Post class>',
+    	'slug'       => '<slug to be used when registering post (will be prefixed by the plugin/theme prefix.>',
+    ) );
 
 
 ### Adding rewrite rules
