@@ -231,53 +231,5 @@ if (!class_exists('CM_WP_Element_PostType')) {
         public function get_slug() {
             return $this->slug;
         }
-
-
-        /**
-         * Adds post metadata
-         *
-         * @param string  $meta_key   Meta key to store under
-         * @param string  $meta_value Value to store
-         * @param boolean $unique     Whether or not you want the key to stay unique.
-         *                            When set to true, the custom field will not be
-         *                            added if the given key already exists among
-         *                            custom fields of the specified post.
-         *                            Default: false
-         *
-         * @return bool Boolean true, except if the $unique argument was set to true
-         *              and a custom field with the given key already exists, in
-         *              which case false is returned.
-         */
-        public function add_meta( $meta_key, $meta_value, $unique = false ) {
-            return add_post_meta( $this->get_ID(), $meta_key, $meta_value, $unique );
-        }
-
-
-        /**
-         * Updates the value of an existing meta key (custom field) for the specified
-         * post
-         *
-         * @param string $meta_key   The key of the custom field you will edit.
-         * @param string $meta_value The new value of the custom field. A passed
-         *                           array will be serialized into a string.
-         * @param string $prev_value (optional) The old value of the custom field you
-         *                           wish to change. This is to differentiate between
-         *                           several fields with the same key. If omitted,
-         *                           and there are multiple rows for this post and
-         *                           meta key, all meta values will be updated.
-         *
-         * @return mixed Returns meta_id if the meta doesn't exist, otherwise returns
-         *               true on success and false on failure. NOTE: If the
-         *               meta_value passed to this function is the same as the value
-         *               that is already in the database, this function returns false
-         */
-        public function update_post_meta( $meta_key, $meta_value, $prev_value = '' ) {
-            return update_post_meta(
-                $this->get_ID(),
-                $meta_key,
-                $meta_value,
-                $prev_value
-            );
-        }
     }
 }
