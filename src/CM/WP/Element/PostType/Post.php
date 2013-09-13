@@ -40,6 +40,41 @@ if (!class_exists('CM_WP_Element_PostType_Post')) {
 
 
 
+        /**
+         * Updated the saved post data
+         *
+         * @return $this (for method chaining)
+         */
+        protected function update_post() {
+            $post = get_post( $this->get_ID() );
+
+            $this->wp_post = $post;
+
+            return $this;
+        }
+
+        /**
+         * Saves the current post to the database
+         *
+         * @return $this (for method chaining)
+         */
+        protected function save() {
+            wp_update_post( $this->wp_post );
+        }
+
+
+        /**
+         * Publishes the post
+         * @return void
+         */
+        public function publish() {
+            $this->set_status( 'publish' );
+        }
+
+
+
+
+
         /**************************
          * Getters, setters, etc. *
          **************************/
@@ -69,6 +104,20 @@ if (!class_exists('CM_WP_Element_PostType_Post')) {
          */
         public function get_ID() {
             return $this->wp_post->ID;
+        }
+
+
+        /**
+         * Sets the post status
+         *
+         * @param string $status The status to set to
+         *
+         * @return void
+         */
+        public function set_status( $status ) {
+            $this->update_post();
+            $this->wp_post->post_status = $status;
+            $this->save();
         }
     }
 }
