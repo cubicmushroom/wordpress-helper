@@ -60,5 +60,15 @@ if (!class_exists('CM_WP_Element_PostType_Post')) {
 
             $this->wp_post = $post;
         }
+
+
+        /**
+         * Returns the ID of the post
+         *
+         * @return int
+         */
+        public function get_ID() {
+            return $this->wp_post->ID;
+        }
     }
 }
