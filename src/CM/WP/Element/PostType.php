@@ -122,7 +122,7 @@ if (!class_exists('CM_WP_Element_PostType')) {
             'show_ui' => true, 
             'show_in_menu' => true, 
             'query_var' => true,
-            'rewrite' => array( 'slug' => 'book' ),
+            'rewrite' => array( 'slug' => 'change_me' ),
             'capability_type' => 'post',
             'has_archive' => true, 
             'hierarchical' => false,
@@ -154,10 +154,17 @@ if (!class_exists('CM_WP_Element_PostType')) {
         ) {
 
             parent::__construct( $owner );
-            $this->slug   = $slug;
+            $this->slug = $slug;
 
             // Build the labels array from the $name
             $this->set_labels( $name );
+
+            // Change the post slug from 'change_me'
+            $this->post_args['rewrite']['slug'] = preg_replace(
+                '/^' . $owner->get_prefix() . '_/',
+                '',
+                $this->slug
+            );
            
             // If we've been passed a post_class, override the default class
             if ( ! empty( $args['post_class'] ) ) {
