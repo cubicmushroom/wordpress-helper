@@ -47,12 +47,12 @@ Additionally, you can provide an array of arguments as the 2nd parameter…
 
 To add a rewrite rule for a plugin/theme…
 
-    $PluginName->custom_url( $regex, $rewrite, $position );
+    $PluginName->custom_uri( $regex, $rewrite, $position );
 
 
 To add an automatic handler for the rewrite…
 
-    $PluginName->custom_url( $regex, [$rewrite, $position] )->is_handled_by( $callback );
+    $PluginName->custom_uri( $regex, [[$rewrite], $position] )->is_handled_by( $callback );
 
 
 
