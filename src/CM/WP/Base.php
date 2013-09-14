@@ -115,18 +115,21 @@ if (!class_exists('CM_WP_Base')) {
         /**
          * Adds a rewrite rule for a custom permalink format
          *
-         * @param string $regex    Regex defining the URL to match  This should not
-         *                         include the regex delimiters or the leading '^' as
-         *                         these are added automatically by WordPress
-         * @param string $redirect (optional) Where to redirect to.
-         *                         If not provided, will redirect to index.php
-         *                         This may not seem to be much use as WordPress
-         *                         relies on parameters to determine the page to
-         *                         display, however when used in conjunction with the
-         *                         CM_WP_Rewrite::is_handled_by() method that can be
-         *                         used to handle the request
-         * @param string $position Position to add the rewrite (top|bottom).
-         *                         See WP add_rewrite_rule() function for explanation
+         * @param string $regex         Regex defining the URL to match  This should
+         *                              not include the regex delimiters or the
+         *                              leading '^' as these are added automatically
+         *                              by WordPress
+         * @param string $redirect      (optional) Where to redirect to.
+         *                              If not provided, will redirect to index.php
+         *                              This may not seem to be much use as WordPress
+         *                              relies on parameters to determine the page to
+         *                              display, however when used in conjunction
+         *                              with the CM_WP_Rewrite::is_handled_by()
+         *                              method that can be used to handle the request
+         * @param string $position      Position to add the rewrite (top|bottom).
+         *                              See WP add_rewrite_rule() function for
+         *                              explanation
+         * @param array  $register_tags Array of tags to register
          *
          * @return CM_WP_Element_Rewrite Returns an object that can then be used to
          *                               add a request handler
@@ -134,7 +137,8 @@ if (!class_exists('CM_WP_Base')) {
         public function custom_uri(
             $regex,
             $redirect = 'index.php',
-            $position = 'top'
+            $position = 'top',
+            $register_tags = array()
         ) {
             // Register the new rewrite
             $rewrite = CM_WP_Element_Rewrite::register(
@@ -143,6 +147,8 @@ if (!class_exists('CM_WP_Base')) {
                 $redirect,
                 $position
             );
+
+            $rewrite->register_tags( $register_tags );
 
             return $rewrite;
         }

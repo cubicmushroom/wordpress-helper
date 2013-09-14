@@ -22,6 +22,12 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
         static protected $rewrites = array();
 
         /**
+         * Flag to indicate whether the rewrite id tag has been registered
+         * @var boolean
+         */
+        static protected $registered_rewrite_id_tag = false;
+
+        /**
          * Flag to indicate whether the action hook for handling requests has been
          * registered
          * 
@@ -64,6 +70,14 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
             );
 
             self::$rewrites[$rewrite->get_id()] = $rewrite;
+
+            // If we're not already done so, register the rewrite ID tag
+            if ( ! self::$registered_rewrite_id_tag ) {
+                $rewrite->register_tags(
+                    array( self::REDIRECT_ID_PARAM )
+                );
+                self::$registered_rewrite_id_tag = true;
+            }
 
             return $rewrite;
         }
@@ -141,6 +155,12 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
         protected $redirect;
 
         /**
+         * Array of custom tags to register
+         * @var array
+         */
+        protected $tags_to_register = array();
+
+        /**
          * The position for registering the rewrite rule
          * @var string
          */
@@ -186,10 +206,16 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
             // to hook into request when it's received & handle the request using a
             // callback set using the is_handles_by() method
             $redirect_id_param = self::REDIRECT_ID_PARAM;
-            $this->redirect = add_query_arg(
+
+            // We need to replace any $match[] entries with placeholders, before
+            // adding the redirect ID otherwise they get url encoded during the
+            // add_query_arg() call
+            $redirect = preg_replace( '/\$matches\[(\d)\]/', '___Matches_$1___', $redirect );
+            $rewite_with_id = add_query_arg(
                 array( $redirect_id_param => $this->id),
                 $redirect
             );
+            $this->redirect = preg_replace( '/___Matches_(\d)___/', '\$matches[$1]', $rewite_with_id );
 
             $this->position = $position;
 
@@ -205,6 +231,7 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
          * @return void
          */
         public function hook_add_rewrite_rule_to_wp() {
+            $this->add_custom_tags();
             $this->add_rewrite_rule_to_wp();
         }
 
@@ -218,6 +245,35 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
         protected function add_rewrite_rule_to_wp() {
             add_rewrite_rule( $this->regex, $this->redirect, $this->position );
         }
+
+
+        /**
+         * Allows for custom tags to be registered
+         *
+         * @param array $tags Array of tags to register
+         *
+         * @return [type]       [description]
+         */
+        public function register_tags( $tags ) {
+            $this->tags_to_register = array_merge( $this->tags_to_register, $tags );
+        }
+
+
+        protected function add_custom_tags() {
+            if ( ! empty( $this->tags_to_register ) ) {
+                foreach ( $this->tags_to_register as $key => $value ) {
+                    if ( is_numeric( $key ) ) {
+                        $tag = $value;
+                        $tag_regex = '([^&]+)';
+                    } else {
+                        $tag = $key;
+                        $tag_regex = $value;
+                    }
+                    add_rewrite_tag( "%{$tag}%", $tag_regex );
+                }
+            }
+        }
+
 
         /**
          * Adds a callback to handle the rewrite request

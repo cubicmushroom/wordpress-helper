@@ -47,12 +47,36 @@ Additionally, you can provide an array of arguments as the 2nd parameter…
 
 To add a rewrite rule for a plugin/theme…
 
-    $PluginName->custom_uri( $regex, $rewrite, $position );
+    $PluginName->custom_url( $regex, $rewrite, $position );
 
 
 To add an automatic handler for the rewrite…
 
-    $PluginName->custom_uri( $regex, [[$rewrite], $position] )->handled_by( $callback );
+    $PluginName->custom_url( $regex, [$rewrite, $position] )->is_handled_by( $callback );
+
+
+You can also provide additional tags to register as the 4th parameter in 2 forms…
+
+	// This will register tags with the tag regex of /([^&]+)/
+	$additional_tags = array(
+		'<tag_name>',
+		'<tag_name>',
+	);
+    $PluginName->custom_url( $regex, $rewrite, $position, $additional_tags );
+
+	// This will register tags with the provided tag regex
+	$additional_tags = array(
+		'<tag_name>' => '<regex>',
+		'<tag_name>' => '<regex>,
+	);
+    $PluginName->custom_url( $regex, $rewrite, $position, $additional_tags );
+
+	// You can also use a combination of these…
+	$additional_tags = array(
+		'<tag_name>',
+		'<tag_name>' => '<regex>,
+	);
+    $PluginName->custom_url( $regex, $rewrite, $position, $additional_tags );
 
 
 
