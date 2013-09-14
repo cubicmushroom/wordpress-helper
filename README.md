@@ -52,7 +52,7 @@ To add a rewrite rule for a plugin/theme…
 
 To add an automatic handler for the rewrite…
 
-    $PluginName->custom_uri( $regex, [[$rewrite], $position] )->is_handled_by( $callback );
+    $PluginName->custom_uri( $regex, [[$rewrite], $position] )->handled_by( $callback );
 
 
 
