@@ -119,5 +119,27 @@ if (!class_exists('CM_WP_Element_PostType_Post')) {
             $this->wp_post->post_status = $status;
             $this->save();
         }
+
+        /**
+         * Used to determine if the property on the WP_Post object is set
+         *
+         * @param string $what property requested
+         *
+         * @return boolean
+         */
+        public function __isset( $what ) {
+            return isset( $this->wp_post->{$what} );
+        }
+
+        /**
+         * Used to return properties of the WP_Post object
+         *
+         * @param string $what Name of the property requested
+         *
+         * @return mixed       Property of the WP_Post object
+         */
+        public function __get( $what ) {
+            return $this->wp_post->{$what};
+        }
     }
 }
