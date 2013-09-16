@@ -101,6 +101,17 @@ Every plugin/theme that registers the module is stored in the module's `$registe
 The directory & the URI of the plugin/theme that registered the module are available in the `$dir` & `$uri` properties, respectfully.  This allows for the loading of files from additional libraries within the plugin/theme directory.  These properties are set immediately after the module object is instantiated, but not during.  There for if these are needed for setup, setup should be performed in the `initialise()` method, that is called immediately after the `$dir` & `$uri` properties are set.
 
 
+Displaying 404 Page
+-------------------
+
+To display a 404 message…
+
+    $plugin->display_404();
+
+
+This should be used before any of the template has been output though
+
+
 Roadmap
 -------
 

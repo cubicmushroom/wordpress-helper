@@ -232,6 +232,26 @@ if (!class_exists('CM_WP_Base')) {
 
 
 
+        /************************
+         * Other useful methods *
+         ************************/
+
+        /**
+         * Displays the WP 404 page template
+         *
+         * Code courtesy of http://bit.ly/16c5MiF
+         *
+         * @return void
+         */
+        public function display_404() {
+            status_header(404);
+            nocache_headers();
+            include( get_404_template() );
+            exit;
+        }
+
+
+
 
         /****************
          * Useful hooks *
