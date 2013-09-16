@@ -37,9 +37,9 @@ To register a post types, just call the register_post_type() method on the theme
 Additionally, you can provide an array of arguments as the 2nd parameter…
 
     $packages_pt = $PluginName->register_post_type( 'Packages', array(
-    	'class'      => '<Name of that extends the CM_WP_Element_PostType class>',
-        'post_class' => '<Name of that extends the CM_WP_Element_PostType_Post class>',
-    	'slug'       => '<slug to be used when registering post (will be prefixed by the plugin/theme prefix.>',
+    	'class'      => '{Name of that extends the CM_WP_Element_PostType class}',
+        'post_class' => '{Name of that extends the CM_WP_Element_PostType_Post class}',
+    	'slug'       => '{slug to be used when registering post (will be prefixed by the plugin/theme prefix.}',
     ) );
 
 
@@ -59,22 +59,22 @@ You can also provide additional tags to register as the 4th parameter in 2 forms
 
 	// This will register tags with the tag regex of /([^&]+)/
 	$additional_tags = array(
-		'<tag_name>',
-		'<tag_name>',
+		'{tag_name}',
+		'{tag_name}',
 	);
     $PluginName->custom_url( $regex, $rewrite, $position, $additional_tags );
 
 	// This will register tags with the provided tag regex
 	$additional_tags = array(
-		'<tag_name>' => '<regex>',
-		'<tag_name>' => '<regex>,
+		'{tag_name}' => '{regex}',
+		'{tag_name}' => '{regex}',
 	);
     $PluginName->custom_url( $regex, $rewrite, $position, $additional_tags );
 
 	// You can also use a combination of these…
 	$additional_tags = array(
-		'<tag_name>',
-		'<tag_name>' => '<regex>,
+		'{tag_name}',
+		'{tag_name}' => '{regex}',
 	);
     $PluginName->custom_url( $regex, $rewrite, $position, $additional_tags );
 
@@ -87,11 +87,11 @@ Modules
 
 Modules are CM_WP_Module class objects that a plugin or theme can register to add additional functionality.
 
-To write a plugin create a class using the naming convention `CP_WP_Module_<ModuleName>` that extends the `CM_WP_Module` class.
+To write a plugin create a class using the naming convention `CP_WP_Module_{ModuleName}` that extends the `CM_WP_Module` class.
 
 To load the module in a plugin or theme make the following call…
 
-    $plugin->register_module( '<module_name>' )
+    $plugin->register_module( '{module_name}' )
     
 The module name will be converted to camel case to work out the class name of the module to load.
 
