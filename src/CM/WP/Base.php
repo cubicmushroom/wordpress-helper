@@ -34,6 +34,22 @@ if (!class_exists('CM_WP_Base')) {
          */
         protected $registered_modules = array();
 
+
+        /**
+         * Array if stylesheets to be enqueued
+         * @var array
+         */
+        protected $stylesheets_to_enqueue = array();
+
+
+        /**
+         * Flag to indicate whether the action hook to enqueue the stylesheets has
+         * been added
+         *
+         * @var boolean
+         */
+        protected $is_stylesheet_enqueue_callback_added = false;
+
         /**
          * Prepares the plugin prefix
          *
@@ -235,6 +251,29 @@ if (!class_exists('CM_WP_Base')) {
         /************************
          * Other useful methods *
          ************************/
+
+
+        /**
+         * Enqueue CSS files
+         */
+        public function enqueue_style( $handle ) {
+
+            // Add to the array to stylesheets to enqueue
+            if ( ! in_array( $handle, $this->stylesheets_to_enqueue ) ) {
+                $this->stylesheets_to_enqueue[] = $handle;
+            }
+
+            if ( ! $this->is_stylesheet_enqueue_callback_added ) {
+                add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_style_hook' ) );
+                $this->is_stylesheet_enqueue_callback_added = true;
+            }
+        }
+
+        public function enqueue_style_hook() {
+            foreach ( $this->stylesheets_to_enqueue as $handle ) {
+                wp_enqueue_style( $handle );
+            }
+        }
 
         /**
          * Displays the WP 404 page template
