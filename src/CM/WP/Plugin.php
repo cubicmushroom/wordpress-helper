@@ -47,7 +47,7 @@ if (!class_exists('CM_WP_Plugin')) {
          * @throws CM_WP_Exception_PluginNotRegisteredException If the plugin has not
          *         been registered
          * 
-         * @return 
+         * @return CM_WP_Plugin
          */
         static public function load( $slug ) {
 
