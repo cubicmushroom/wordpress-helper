@@ -26,7 +26,11 @@ if (
             $this->callback = $callback;
 
             if ( is_array( $this->callback ) ) {
-                $callback_str = var_export( $this->callback, true );
+                $callback_str = sprintf(
+                    '%s::%s()',
+                    get_class( $this->callback[0] ),
+                    $this->callback[1]
+                );
             } else {
                 $callback_str = $this->callback;
             }
