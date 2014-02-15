@@ -74,6 +74,7 @@ if (!class_exists('CM_WP_Base')) {
 
             // Add specialise hooks
             add_action( 'parse_request', array( $this, 'handle_forms' ) );
+            add_action( 'admin_init', array( $this, 'handle_forms' ) );
         }
 
 
