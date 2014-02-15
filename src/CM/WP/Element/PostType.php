@@ -242,7 +242,7 @@ if (!class_exists('CM_WP_Element_PostType')) {
                 $post_id = (int) $post;
             }
 
-            $post_obj = get_post( &$post );
+            $post_obj = get_post( $post );
 
             if ( empty( $post_obj ) ) {
                 throw new CM_WP_Exception_Element_PostType_PostNotFoundException(
