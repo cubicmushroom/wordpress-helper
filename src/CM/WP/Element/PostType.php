@@ -74,7 +74,7 @@ if (!class_exists('CM_WP_Element_PostType')) {
                 new $class( $owner, $prefixed_slug, $name, $args );
 
             if ( ! self::$hook_registered ) {
-                add_action( 'init', array( __CLASS__, 'register_post_types') );
+                add_action( 'init', array( self::$registered_post_types[$prefixed_slug], 'register_post_types') );
                 self::$hook_registered = true;
             }
 
