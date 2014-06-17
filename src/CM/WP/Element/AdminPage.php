@@ -93,6 +93,8 @@ if ( ! class_exists( 'CM_WP_Element_AdminPage' ) ) {
 		 */
 		public function setCapability( $capability ) {
 			$this->capability = $capability;
+
+			return $this;
 		}
 
 		/**
@@ -106,6 +108,8 @@ if ( ! class_exists( 'CM_WP_Element_AdminPage' ) ) {
 			}
 
 			$this->content_callback = $content_callback;
+
+			return $this;
 		}
 
 		/**
@@ -121,6 +125,8 @@ if ( ! class_exists( 'CM_WP_Element_AdminPage' ) ) {
 		 */
 		public function setMenuSlug( $menu_slug ) {
 			$this->menu_slug = $menu_slug;
+
+			return $this;
 		}
 
 		/**
@@ -128,6 +134,8 @@ if ( ! class_exists( 'CM_WP_Element_AdminPage' ) ) {
 		 */
 		public function setMenuTitle( $menu_title ) {
 			$this->menu_title = $menu_title;
+
+			return $this;
 		}
 
 		/**
@@ -135,6 +143,8 @@ if ( ! class_exists( 'CM_WP_Element_AdminPage' ) ) {
 		 */
 		public function setPageTitle( $page_title ) {
 			$this->page_title = $page_title;
+
+			return $this;
 		}
 
 		/**
@@ -142,6 +152,8 @@ if ( ! class_exists( 'CM_WP_Element_AdminPage' ) ) {
 		 */
 		public function setParentSlug( $parent_slug ) {
 			$this->parent_slug = $parent_slug;
+
+			return $this;
 		}
 	}
 }
