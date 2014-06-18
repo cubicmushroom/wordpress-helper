@@ -130,8 +130,8 @@ if ( ! class_exists( 'CM_WP_Element_AdminPage' ) ) {
 				                             'the settings to the seciton.' );
 			}
 
-			$this->settings[ $id ] = new CM_WP_Element_Setting( $id, $label, $this->page_slug, $section, $type,
-				$helper_text, $attributes );
+			$this->settings[ $id ] = CM_WP_Element_SettingFactory::build( $type, $id, $label, $this->page_slug,
+				$section, $helper_text, $attributes );
 
 			return $this->settings[ $id ];
 		}
