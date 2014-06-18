@@ -14,15 +14,15 @@ if (!class_exists('CM_WP_Element_Shortcode')) {
          */
         static protected $registered_shortcodes = array();
 
-        /**
-         * Registers a shorcode with WordPress, returning a CM_WP_Element_Shortcode
-         * object for further configuring the shortcode functionality
-         *
-         * @param CM_WP_Core $owner     Plugin/theme that this shortcode belongs to
-         * @param string     $shortcode The string that will be the shortcode
-         * 
-         * @return CM_WP_Element_Shortcode
-         */
+	    /**
+	     * Registers a shortcode with WordPress, returning a CM_WP_Element_Shortcode
+	     * object for further configuring the shortcode functionality
+	     *
+	     * @param \CM_WP_Base $owner Plugin/theme that this shortcode belongs to
+	     * @param string $shortcode The string that will be the shortcode
+	     *
+	     * @return CM_WP_Element_Shortcode
+	     */
         static public function register( CM_WP_Base $owner, $shortcode ) {
 
             if ( ! isset( self::$registered_shortcodes[$shortcode] ) ) {
@@ -78,7 +78,7 @@ if (!class_exists('CM_WP_Element_Shortcode')) {
          *
          * @param  array  $default_attributes Default values
          * 
-         * @return $this (for method chaining)
+         * @return $this
          */
         public function default_attributes_are( array $default_attributes ) {
             $this->default_attributes = $default_attributes;
@@ -86,14 +86,16 @@ if (!class_exists('CM_WP_Element_Shortcode')) {
             return $this;
         }
 
-        /**
-         * Sets the handler callback for the shortcode
-         *
-         * @param callable $handler Callable handler that will be used to return the
-         *                          shortcode content
-         *
-         * @return $this (for method chaining)
-         */
+	    /**
+	     * Sets the handler callback for the shortcode
+	     *
+	     * @param callable $handler Callable handler that will be used to return the
+	     *                          shortcode content
+	     *
+	     * @throws CM_WP_Exception_InvalidCallbackException if the handler is not callable
+	     *
+	     * @return $this
+	     */
         public function is_handled_by( $handler ) {
             if ( ! is_callable( $handler ) ) {
                 throw new CM_WP_Exception_InvalidCallbackException( $handler );
@@ -105,19 +107,17 @@ if (!class_exists('CM_WP_Element_Shortcode')) {
         }
 
 
-
-
-
-
-        /**
-         * Does the actual rendering of the shortcode content
-         *
-         * Calls the registered handler for the shorcode
-         *
-         * @param array $attributes Attributes set on the shortcode
-         * 
-         * @return string Text to replace the shortcode string with
-         */
+	    /**
+	     * Does the actual rendering of the shortcode content
+	     *
+	     * Calls the registered handler for the shortcode
+	     *
+	     * @param array $attributes Attributes set on the shortcode
+	     *
+	     * @throws CM_WP_Exception_Element_Shortcode_NoHandlerException if no handler has been set for this shortcode
+	     *
+	     * @return string Text to replace the shortcode string with
+	     */
         public function do_shortcode( $attributes ) {
 
             // Check we have a registered handler

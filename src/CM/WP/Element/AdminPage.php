@@ -52,7 +52,7 @@ if ( ! class_exists( 'CM_WP_Element_AdminPage' ) ) {
 
 
 		/**
-		 * @var array Settings sections added using the add_settings_section() mehtod
+		 * @var array Settings sections added using the add_settings_section() method
 		 */
 		protected $sections = [ ];
 
@@ -62,7 +62,7 @@ if ( ! class_exists( 'CM_WP_Element_AdminPage' ) ) {
 		/**
 		 * Adds hook to add Settings page
 		 *
-		 * @return void
+		 * @return \CM_WP_Element_AdminPage
 		 */
 		public function __construct() {
 
@@ -127,7 +127,7 @@ if ( ! class_exists( 'CM_WP_Element_AdminPage' ) ) {
 			// Check the section has already been added
 			if ( empty( $this->sections[ $section ] ) ) {
 				throw new \RuntimeException( 'Section does not exist.  Please add the section first, and then add ' .
-				                             'the settings to the seciton.' );
+				                             'the settings to the section.' );
 			}
 
 			$this->settings[ $id ] = CM_WP_Element_SettingFactory::build( $type, $id, $label, $this->page_slug,
@@ -176,8 +176,6 @@ if ( ! class_exists( 'CM_WP_Element_AdminPage' ) ) {
 
 		/**
 		 * Used to display the section intro text, if we've not been passed a callable
-		 *
-		 * @param array $section Array of section settings
 		 *
 		 * @return void
 		 */

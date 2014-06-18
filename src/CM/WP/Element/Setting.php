@@ -9,13 +9,15 @@
 /**
  * Used to store Settings for an Admin page
  */
-class CM_WP_Element_Setting {
+
+/** @noinspection SpellCheckingInspection */
+abstract class CM_WP_Element_Setting {
 
 	/**
 	 * Stores which settings have already been registered
 	 * @var array
 	 */
-	static protected $registered_settigns = [ ];
+	static protected $registered_settings = [ ];
 	/**
 	 * ID of the setting
 	 * @var string
@@ -37,11 +39,6 @@ class CM_WP_Element_Setting {
 	 */
 	protected $section;
 	/**
-	 * Type of input.  Should match on of the $input_templates entry keys
-	 * @var string
-	 */
-	protected $type;
-	/**
 	 * @var string HTML to display after the input field
 	 */
 	protected $helper_text;
@@ -60,26 +57,22 @@ class CM_WP_Element_Setting {
 	/**
 	 * @var array
 	 */
-	protected $input_templates = [
-		'text' => '<input name="%1$s[%2$s]" id="%1$s:%2$s" type="text" value="%3$s" %5$s /> %4$s',
-	];
+	protected $input_template;
 
 	/**
 	 * @param string $id Setting ID
 	 * @param string $label Label to use for the input field
+	 * @param string $page ID of the page that this belongs to
 	 * @param string $section Section to add this setting to.  Must already have been added
-	 * @param string|callable $type Type of input.  Can be either one of the predefined formats provided in
-	 *                              $settings_input_templates property
 	 * @param string $helper_text (optional) Text to be displayed after the input field
 	 * @param array $attributes (optional) Array of additional attributes to set on the HTML tag
 	 */
-	public function __construct( $id, $label, $page, $section, $type, $helper_text = '', $attributes = array() ) {
+	public function __construct( $id, $label, $page, $section, $helper_text = '', $attributes = array() ) {
 
 		$this->id          = $id;
 		$this->label       = $label;
 		$this->page        = $page;
 		$this->section     = $section;
-		$this->type        = $type;
 		$this->helper_text = $helper_text;
 		$this->attributes  = $attributes;
 
@@ -116,35 +109,23 @@ class CM_WP_Element_Setting {
 	/**
 	 * Default callback to display the input field
 	 *
-	 * Can be overwridden by using the setInputCallback() method
+	 * Can be overridden by using the setInputCallback() method
 	 */
 	public function zz_input_callback() {
-		if ( is_callable( $this->type ) ) {
-			call_user_func( $this->type, $this );
+		$template = $this->getInputTemplate();
+		if ( is_callable( $template ) ) {
+			call_user_func( $template, $this );
+
 		} else {
-			if ( isset( $this->input_templates[ $this->type ] ) ) {
-				$template = $this->input_templates[ $this->type ];
-			} else {
-				$template = $this->type;
-			}
 
 			// Attributes?
-			$attributes = [ ];
-			foreach ( (array) $this->attributes as $attribute => $attribute_value ) {
-				$attributes[] = "{$attribute}=\"{$attribute_value}\"";
-			}
+			$attributes = $this->prepare_attributes();
 
 			// Get values for field
 			$section_options = get_option( $this->section );
+			$value           = ! empty( $section_options[ $this->id ] ) ? $section_options[ $this->id ] : null;
 
-			printf(
-				$template,
-				$this->section,
-				$this->id,
-				! empty( $section_options[ $this->id ] ) ? $section_options[ $this->id ] : '',
-				$this->helper_text,
-				implode( ' ', $attributes )
-		);
+			$this->display_input( $template, $value, $attributes );
 		}
 	}
 
@@ -156,18 +137,52 @@ class CM_WP_Element_Setting {
 	}
 
 	/**
-	 * Checks if a given input type is supported
+	 * Returns the sprintf() style template for use when rendering the input field for this setting
 	 *
-	 * @param string $type Type to be checked
+	 * sprintf() placeholders...
+	 * - %1$s Settings section ID
+	 * - %2$s Settings ID
+	 * - %3$s Value
+	 * - %4$s Helper text
+	 * - %5$s Attributes
+	 *
+	 * @return string
 	 */
-	protected function validate_input_type( $type ) {
-		if ( empty( $this->input_templates[ $type ] ) ) {
-			throw new \InvalidArgumentException(
-				sprintf( 'Unrecognised $type \'%s\'.  Available types are \'%s\'.',
-					$type,
-					implode( '\', \'', $this->input_templates )
-				)
-			);
+	protected function getInputTemplate() {
+		return $this->input_template;
+	}
+
+	/**
+	 * Prepares any additional input field attributes
+	 *
+	 * @return array
+	 */
+	protected function prepare_attributes() {
+		$attributes = [ ];
+		foreach ( (array) $this->attributes as $attribute => $attribute_value ) {
+			$attributes[] = "{$attribute}=\"{$attribute_value}\"";
 		}
+
+		return $attributes;
+	}
+
+	/**
+	 * Displays the input field for the setting on a settings page
+	 *
+	 * @param string $template
+	 * @param string $value
+	 * @param array $attributes
+	 *
+	 * @return void
+	 */
+	protected function display_input( $template, $value, array $attributes ) {
+		printf(
+			$template,
+			$this->section,
+			$this->id,
+			! empty( $value ) ? $value : '',
+			$this->helper_text,
+			implode( ' ', $attributes )
+		);
 	}
 }

@@ -30,13 +30,13 @@ if (!class_exists('CM_WP_Base')) {
          * Each module is instantiated as an object & stored with the array key of
          * it's name
          *
-         * @var array
+         * @var CM_WP_Module[]
          */
         protected $registered_modules = array();
 
 
         /**
-         * Array if stylesheets to be enqueued
+         * Array if stylesheets to be queued
          * @var array
          */
         protected $stylesheets_to_enqueue = array();
@@ -104,7 +104,7 @@ if (!class_exists('CM_WP_Base')) {
          *                                    If not provided, will be created from
          *                                    the $name value
          * 
-         * @return CM_WP_PostType
+         * @return CM_WP_Element_PostType
          */
         public function register_post_type( $name, $args = array() ) {
 
@@ -114,7 +114,8 @@ if (!class_exists('CM_WP_Base')) {
             );
             $args = wp_parse_args( $args, $defaults );
 
-            $class = $args['class'];
+	        /** @var CM_WP_Element_PostType $class */
+	        $class = $args['class'];
             unset( $args['class'] );
 
             $post_type = $class::register( $this, $name, $args );
@@ -180,8 +181,10 @@ if (!class_exists('CM_WP_Base')) {
          * Registers a shortcode with WordPres, & returns an object to 
          * 
          * @param string $shortcode Shortcode to be added
+         *
+         * @return CM_WP_Element_Shortcode
          */
-        public function add_shrotcode( $shortcode ) {
+        public function add_shortcode( $shortcode ) {
             $shortcode = CM_WP_Element_Shortcode::register( $this, $shortcode );
 
             return $shortcode;
@@ -228,7 +231,8 @@ if (!class_exists('CM_WP_Base')) {
             }
 
             if ( ! isset( $this->registered_modules[$module] ) ) {
-                $this->registered_modules[$module] = $module_class::load( $this );
+	            /** @var CM_WP_Module $module_class */
+	            $this->registered_modules[$module] = $module_class::load( $this );
             } else {
                 $this->registered_modules[$module]->also_registered_by( $this );
             }
@@ -286,7 +290,8 @@ if (!class_exists('CM_WP_Base')) {
         public function display_404() {
             status_header(404);
             nocache_headers();
-            include( get_404_template() );
+	        /** @noinspection PhpIncludeInspection */
+	        include( get_404_template() );
             exit;
         }
 

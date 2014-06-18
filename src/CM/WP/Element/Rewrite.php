@@ -125,7 +125,8 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
                 return;
             }
 
-            $rewrite = self::$rewrites[$redirect_id];
+	        /** @var CM_WP_Element_Rewrite $rewrite */
+	        $rewrite = self::$rewrites[$redirect_id];
 
             // Try calling the rewrite handler
             $rewrite->handle_query( $query );
@@ -202,7 +203,7 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
 
             $this->regex = $regex;
 
-            // Add the redirect's ID as a parameter to the redirect.  This allows us
+            // Add the redirect ID as a parameter to the redirect.  This allows us
             // to hook into request when it's received & handle the request using a
             // callback set using the is_handles_by() method
             $redirect_id_param = self::REDIRECT_ID_PARAM;
@@ -211,11 +212,11 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
             // adding the redirect ID otherwise they get url encoded during the
             // add_query_arg() call
             $redirect = preg_replace( '/\$matches\[(\d)\]/', '___Matches_$1___', $redirect );
-            $rewite_with_id = add_query_arg(
+            $rewrite_with_id = add_query_arg(
                 array( $redirect_id_param => $this->id),
                 $redirect
             );
-            $this->redirect = preg_replace( '/___Matches_(\d)___/', '\$matches[$1]', $rewite_with_id );
+            $this->redirect = preg_replace( '/___Matches_(\d)___/', '\$matches[$1]', $rewrite_with_id );
 
             $this->position = $position;
 
@@ -247,13 +248,13 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
         }
 
 
-        /**
-         * Allows for custom tags to be registered
-         *
-         * @param array $tags Array of tags to register
-         *
-         * @return [type]       [description]
-         */
+	    /**
+	     * Allows for custom tags to be registered
+	     *
+	     * @param array $tags Array of tags to register
+	     *
+	     * @return void
+	     */
         public function register_tags( $tags ) {
             $this->tags_to_register = array_merge( $this->tags_to_register, $tags );
         }
@@ -323,7 +324,7 @@ if (!class_exists('CM_WP_Element_Rewrite')) {
          */
         protected function handle_query( $query ) {
             if ( isset( $this->handler ) ) {
-                call_user_func( $this->handler );
+                call_user_func( $this->handler, $query );
             }
         }
 

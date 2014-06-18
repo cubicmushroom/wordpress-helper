@@ -23,7 +23,7 @@ if (!class_exists('CM_WP_Exception_Element_PostType_AlreadyRegisteredException')
                 sprintf(
                     "Plugin with the slug '%s' has already been registered",
                     $this->slug
-                );
+                )
             );
         }
     }

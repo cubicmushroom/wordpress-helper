@@ -1,61 +1,55 @@
 <?php
 
-class CM_WP_Plugin extends CM_WP_Base {
+class CM_WP_Theme extends CM_WP_Base {
 
-    /***************************************
-     * Static factory properties & methods *
-     ***************************************/
+	/***************************************
+	 * Static factory properties & methods *
+	 ***************************************/
 
-    /**
-     * Stores all registered plugins
-     *
-     * @var array
-     */
-    static protected $plugins = array();
+	/**
+	 * Stores all registered plugins
+	 *
+	 * @var array
+	 */
+	static protected $theme;
 
-    /**
-     * Registers a new plugin object
-     *
-     * @param string $slug The slug used to identify this plugin
-     * @param string $file The full path to the plugin's root file
-     *
-     * @throws CM_WP_Exception_PluginAlreadyRegisteredException If a plugin has
-     *         already been registered with that slug
-     *
-     * @return CM_WP_Plugin
-     */
-    static public function register( $slug, $file ) {
+	/**
+	 * Registers a new plugin object
+	 *
+	 * @param string $slug The slug used to identify this plugin
+	 *
+	 * @throws CM_WP_Exception_ThemeAlreadyRegisteredException
+	 *
+	 * @return CM_WP_Theme
+	 */
+	static public function register( $slug ) {
 
-        // Check that this plugin has not already been registered
-        if ( isset( self::$plugins[$slug] ) ) {
-            throw new CM_WP_Exception_PluginAlreadyRegisteredException( $slug );
-        }
+		// Check that this plugin has not already been registered
+		if ( isset( self::$theme ) ) {
+			throw new CM_WP_Exception_ThemeAlreadyRegisteredException( $slug );
+		}
 
-        // Create the plugin object
-        self::$plugins[$slug] = new CM_WP_Plugin( $slug, $file );
+		// Create the plugin object
+		self::$theme = new CM_WP_Theme( $slug );
 
-        return self::$plugins[$slug];
-    }
+		return self::$theme;
+	}
 
-    /**
-     * Loads a previously registered plugin
-     *
-     * @param string $slug Slug of the plugin required
-     *
-     * @throws CM_WP_Exception_PluginNotRegisteredException If the plugin has not
-     *         been registered
-     *
-     * @return CM_WP_Plugin
-     */
-    static public function load( $slug ) {
+	/**
+	 * Loads a previously registered plugin
+	 *
+	 * @throws CM_WP_Exception_ThemeNotRegisteredException
+	 *
+	 * @return CM_WP_Theme
+	 */
+	static public function load() {
 
-        // Check that the plugin requested is registered
-        if ( ! isset( self::$plugins[$slug] ) ) {
-            throw new CM_WP_Exception_PluginNotRegisteredException( $slug );
-        }
-
-        return self::$plugins[$slug];
-    }
+		// Check that the plugin requested is registered
+		if ( ! isset( self::$theme ) ) {
+			throw new CM_WP_Exception_ThemeNotRegisteredException();
+		}
+		return self::$theme;
+	}
 
 
 
@@ -65,45 +59,23 @@ class CM_WP_Plugin extends CM_WP_Base {
 
 
 
-    /*******************************
-     * Object properties & methods *
-     *******************************/
+	/*******************************
+	 * Object properties & methods *
+	 *******************************/
 
-    /**
-     * Plugin's main file
-     *
-     * @var string
-     */
-    protected $file;
+	/**
+	 * Sets the root file for the plugin for use within function calls
+	 *
+	 * This method is protected as should be called from the static create
+	 * factory method
+	 *
+	 * @param string $slug The slug used to identify this plugin used to build
+	 *                     prefix
+	 */
+	protected function __construct( $slug ) {
 
-    /**
-     * Sets the root file for the plugin for use within function calls
-     *
-     * This method is protected as should be called from the static create
-     * factory method
-     *
-     * @param string $slug The slug used to identify this plugin used to build
-     *                     prefix
-     * @param string $file The full path to the plugin's root file
-     */
-    protected function __construct( $slug, $file )
-    {
-        $this->file = $file;
-
-        // Call the CM_WP_Base constructor to set the plugin prefix (used to
-        // namespace various items)
-        parent::__construct( $slug );
-    }
-
-
-
-
-    /**************************
-     * Getters, setters, etc. *
-     **************************/
-
-
-    public function get_file() {
-        return $this->file;
-    }
+		// Call the CM_WP_Base constructor to set the plugin prefix (used to
+		// namespace various items)
+		parent::__construct( $slug );
+	}
 }

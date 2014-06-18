@@ -1,6 +1,6 @@
 <?php
 
-class CM_WP_Exception_PluginAlreadyRegisteredException extends
+class CM_WP_Exception_ThemeAlreadyRegisteredException extends
     Exception
 {
     /**
