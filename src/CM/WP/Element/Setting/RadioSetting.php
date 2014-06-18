@@ -35,7 +35,7 @@ class CM_WP_Element_Setting_RadioSetting extends CM_WP_Element_Setting {
 	 * Template for input field
 	 * @var string
 	 */
-	protected $input_template = '<label title="%7$s"><input name="%1$s[%2$s]" id="%1$s:%2$s" type="radio" value="%6$s" %3$s> <span>%7$s</span></label> %4$s';
+	protected $input_template = '<label title="%7$s"><input name="%1$s" id="%2$s" type="radio" value="%6$s" %3$s> <span>%7$s</span></label> %4$s';
 
 	/**
 	 * @var string HTML to place before the options
@@ -178,8 +178,8 @@ class CM_WP_Element_Setting_RadioSetting extends CM_WP_Element_Setting {
 	protected function get_input_option( $template, $current_value, array $attributes, $option_value, $option_args ) {
 		return sprintf(
 			$template,
-			$this->section,
-			$this->id,
+			$this->get_input_name(),
+			$this->get_input_id(),
 			( ( $current_value === $option_value ) ? 'checked="checked"' : '' ),
 			$this->helper_text,
 			implode( ' ', $attributes ),

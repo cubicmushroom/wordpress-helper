@@ -8,5 +8,5 @@
 
 class CM_WP_Element_Setting_TextSetting extends CM_WP_Element_Setting {
 
-	protected $input_template = '<input name="%1$s[%2$s]" id="%1$s:%2$s" type="text" value="%3$s" %5$s /> %4$s';
+	protected $input_template = '<input name="%1$s" id="%2$s" type="text" value="%3$s" %5$s /> %4$s';
 }

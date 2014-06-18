@@ -122,8 +122,7 @@ abstract class CM_WP_Element_Setting {
 			$attributes = $this->prepare_attributes();
 
 			// Get values for field
-			$section_options = get_option( $this->section );
-			$value           = ! empty( $section_options[ $this->id ] ) ? $section_options[ $this->id ] : null;
+			$value = $this->get_value();
 
 			$this->display_input( $template, $value, $attributes );
 		}
@@ -178,11 +177,62 @@ abstract class CM_WP_Element_Setting {
 	protected function display_input( $template, $value, array $attributes ) {
 		printf(
 			$template,
-			$this->section,
-			$this->id,
+			$this->get_input_name(),
+			$this->get_input_id(),
 			! empty( $value ) ? $value : '',
 			$this->helper_text,
 			implode( ' ', $attributes )
 		);
+	}
+
+	/**
+	 * Returns the id attribute for the input field
+	 *
+	 * @return string
+	 */
+	protected function get_input_id() {
+		return $this->id;
+	}
+
+	/**
+	 * Returns the name attribute for the input field
+	 *
+	 * @return string
+	 */
+	protected function get_input_name() {
+		$id_parts = $this->get_id_parts();
+
+		$id = array_shift( $id_parts );
+
+		if ( ! empty( $id_parts ) ) {
+			$id .= '[' . implode( '][', $id_parts ) . ']';
+		}
+
+		return $id;
+	}
+
+	/**
+	 * Returns the name attribute for the input field
+	 *
+	 * @return array
+	 */
+	protected function get_id_parts() {
+		return explode( '.', $this->id );
+	}
+
+	/**
+	 * @return null
+	 */
+	protected function get_value() {
+		$id_parts = $this->get_id_parts();
+		$value    = get_option( array_shift( $id_parts ) );
+		foreach ( $id_parts as $id_part ) {
+			if (empty($value[$id_part])) {
+				return null;
+			}
+			$value = $value[$id_part];
+		}
+
+		return $value;
 	}
 }
