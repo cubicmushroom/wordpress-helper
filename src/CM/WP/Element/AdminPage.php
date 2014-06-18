@@ -120,7 +120,7 @@ if ( ! class_exists( 'CM_WP_Element_AdminPage' ) ) {
 		 * @param string $helper_text (optional) Text to be displayed after the input field
 		 * @param array $attributes (optional) Array of additional attributes to set on the HTML tag
 		 *
-		 * @return void
+		 * @return CM_WP_Element_Setting
 		 */
 		public function add_setting( $id, $label, $section, $type, $helper_text = '', $attributes = array() ) {
 
@@ -132,6 +132,8 @@ if ( ! class_exists( 'CM_WP_Element_AdminPage' ) ) {
 
 			$this->settings[ $id ] = new CM_WP_Element_Setting( $id, $label, $this->page_slug, $section, $type,
 				$helper_text, $attributes );
+
+			return $this->settings[ $id ];
 		}
 
 		/**
