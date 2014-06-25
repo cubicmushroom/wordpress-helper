@@ -87,7 +87,7 @@ class CM_WP_Element_PostType extends CM_WP_Element {
      * Other static methods *
      ************************/
 
-    public function register_post_types() {
+    static public function register_post_types() {
         foreach ( self::$registered_post_types as $post_type ) {
 	        /** @var CM_WP_Element_PostType $post_type */
 	        $post_type->register_with_wp();
