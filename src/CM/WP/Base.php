@@ -204,14 +204,18 @@ if (!class_exists('CM_WP_Base')) {
          * @return string
          */
         protected function get_module_class( $module ) {
-            return 'CM_WP_Module_' .
-                str_replace(
-                    ' ',
-                    '',
-                    ucwords(
-                        str_replace( '_', ' ', $module )
-                    )
-                );
+
+	        $non_namespace_class =
+		        'CM_WP_Module_' . str_replace( ' ', '', ucwords( str_replace( '_', ' ', $module ) ) );
+
+	        if (class_exists($non_namespace_class)) {
+		        return $non_namespace_class;
+	        }
+
+	        $namespace_class =
+		        '\\CM\\WP\\Module\\' . str_replace( ' ', '', ucwords( str_replace( '_', ' ', $module ) ) );
+
+            return $namespace_class;
         }
 
         /**
