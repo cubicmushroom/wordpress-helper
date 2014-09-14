@@ -52,9 +52,9 @@ class CM_WP_Element_AdminPage {
 	/**
 	 * @var array Settings sections added using the add_settings_section() method
 	 */
-	protected $sections = [ ];
+	protected $sections = array( );
 
-	protected $settings = [ ];
+	protected $settings = array( );
 
 
 	/**

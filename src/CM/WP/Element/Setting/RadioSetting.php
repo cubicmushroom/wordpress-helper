@@ -22,7 +22,7 @@ class CM_WP_Element_Setting_RadioSetting extends CM_WP_Element_Setting {
 	 *
 	 * @var array
 	 */
-	protected $options = [ ];
+	protected $options = array( );
 
 
 	/**
@@ -156,7 +156,7 @@ class CM_WP_Element_Setting_RadioSetting extends CM_WP_Element_Setting {
 			$current_value = $this->getDefaultValue();
 		}
 
-		$inputs = [ ];
+		$inputs = array( );
 		foreach ( $options as $option_value => $option_label ) {
 			$inputs[] = $this->get_input_option( $template, $current_value, $attributes, $option_value, $option_label );
 		}

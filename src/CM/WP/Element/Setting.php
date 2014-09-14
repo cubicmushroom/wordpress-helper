@@ -17,7 +17,7 @@ abstract class CM_WP_Element_Setting {
 	 * Stores which settings have already been registered
 	 * @var array
 	 */
-	static protected $registered_settings = [ ];
+	static protected $registered_settings = array( );
 	/**
 	 * ID of the setting
 	 * @var string
@@ -157,7 +157,7 @@ abstract class CM_WP_Element_Setting {
 	 * @return array
 	 */
 	protected function prepare_attributes() {
-		$attributes = [ ];
+		$attributes = array( );
 		foreach ( (array) $this->attributes as $attribute => $attribute_value ) {
 			$attributes[] = "{$attribute}=\"{$attribute_value}\"";
 		}
